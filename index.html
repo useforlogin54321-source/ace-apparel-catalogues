@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ace Apparel Catalogues</title>
-<meta name="description" content="Ace Apparel uniform catalogues since 1991: aprons, chef coats, shirts, t-shirts, workwear and footwear.">
+<title>Ace Apparel | Uniforms for Every Team</title>
+<meta name="description" content="Explore Ace Apparel uniform catalogues since 1991: aprons, chef coats, shirts, T-shirts, workwear and footwear. Uniforms for hospitality, service and professional teams in Pune.">
 <meta name="theme-color" content="#2a3c50">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,12 +15,12 @@
 <script src="assets/boot.js"></script>
 </head>
 <body>
-<a class="skip" href="#groups">Skip to catalogues</a>
+<a class="skip" href="#find">Skip to catalogues</a>
 
 <header class="hero" id="top">
   <div class="wrap">
     <h1><img class="wordmark" src="assets/wordmark.png" width="600" height="384" fetchpriority="high" alt="Ace Apparel, established 1991, by The Bombay Hosiery Shop, Pune"></h1>
-    <p>Browse our catalogues</p>
+    <p>Uniforms that make the first impression.</p>
     <div class="seam" aria-hidden="true"></div>
   </div>
   <div class="hero-end"></div>
@@ -41,7 +41,17 @@
 </nav>
 
 <main>
-  <div class="wrap" id="groups">
+  <div class="wrap">
+    <div class="intro" id="find">
+      <h2>Find your uniform</h2>
+      <label class="search">
+        <span class="sr">Search catalogues</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Search catalogues" autocomplete="off" enterkeyhint="search">
+      </label>
+    </div>
+    <p class="sr" id="status" role="status"></p>
+    <div id="groups">
     <section class="group" id="aprons">
       <h2>Aprons <small aria-hidden="true">5</small><span class="sr">, 5 catalogues</span></h2>
       <div class="stitch" aria-hidden="true"></div>
@@ -150,6 +160,8 @@
       </a>
       </div>
     </section>
+    </div>
+    <p class="empty" id="empty" hidden>No catalogue matches that. Try a shorter word, such as &ldquo;apron&rdquo; or &ldquo;shirt&rdquo;.</p>
   </div>
 </main>
 

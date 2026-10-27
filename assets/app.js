@@ -49,6 +49,35 @@
     sections.forEach(function (s) { s.classList.add("in"); });
   }
 
+  /* Search: match the name or category, ignoring punctuation and spaces ("t shirt", "tshirt" and "T-shirts" all work). */
+  var input = document.getElementById("q"), statusEl = document.getElementById("status"), emptyEl = document.getElementById("empty");
+  var norm = function (s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim(); };
+  var cards = Array.prototype.map.call(document.querySelectorAll(".card"), function (card) {
+    var sec = card.closest(".group"), hay = norm(card.querySelector("strong").textContent + " " + sec.querySelector("h2").firstChild.textContent);
+    return { card: card, sec: sec, hay: hay, squashed: hay.replace(/ /g, "") };
+  });
+  var heads = sections.map(function (s) {
+    return { sec: s, small: s.querySelector("h2 small"), sr: s.querySelector("h2 .sr"), chip: chips.filter(function (c) { return c.dataset.k === s.id; })[0] };
+  });
+  function runSearch() {
+    var q = norm(input.value), tokens = q ? q.split(" ") : [], squashedQ = q.replace(/ /g, ""), total = 0, per = {};
+    cards.forEach(function (o) {
+      var show = !q || tokens.every(function (t) { return o.hay.indexOf(t) > -1; }) || o.squashed.indexOf(squashedQ) > -1;
+      o.card.hidden = !show;
+      if (show) { total++; per[o.sec.id] = (per[o.sec.id] || 0) + 1; }
+    });
+    heads.forEach(function (h) {
+      var n = per[h.sec.id] || 0;
+      h.sec.hidden = n === 0; if (h.chip) h.chip.hidden = n === 0;
+      h.small.textContent = n; h.sr.textContent = ", " + n + (n === 1 ? " catalogue" : " catalogues");
+    });
+    emptyEl.hidden = total !== 0;
+    statusEl.textContent = q ? (total === 0 ? "No catalogues found" : total + (total === 1 ? " catalogue found" : " catalogues found")) : "";
+  }
+  input.addEventListener("input", runSearch);
+  input.addEventListener("keydown", function (e) { if (e.key === "Enter") input.blur(); }); /* closes the phone keyboard */
+
+
   document.getElementById("toTop").addEventListener("click", function () {
     window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
   });
