@@ -19,7 +19,7 @@
   /* Category bar: highlight the section in view and keep that chip visible. */
   var chipsEl = document.getElementById("chips");
   var chips = Array.prototype.slice.call(chipsEl.querySelectorAll(".chip"));
-  var current = null;
+  var current = null, centerTimer = null;
   function setActive(key) {
     if (key === current) return;
     current = key;
@@ -28,7 +28,12 @@
       var on = c.dataset.k === key;
       if (on) { c.setAttribute("aria-current", "true"); active = c; } else c.removeAttribute("aria-current");
     });
-    if (active) chipsEl.scrollTo({ left: active.offsetLeft - (chipsEl.clientWidth - active.offsetWidth) / 2, behavior: reduce ? "auto" : "smooth" });
+    if (active) {
+      clearTimeout(centerTimer);
+      centerTimer = setTimeout(function () {
+        chipsEl.scrollTo({ left: active.offsetLeft - (chipsEl.clientWidth - active.offsetWidth) / 2, behavior: reduce ? "auto" : "smooth" });
+      }, 180);
+    }
   }
 
   var sections = Array.prototype.slice.call(document.querySelectorAll(".group"));
