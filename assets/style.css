@@ -94,6 +94,26 @@ footer p{margin:0;font-size:14px}
 .contact a.alt{background:transparent;color:var(--cream);border:1.5px solid #8c9bab}
 .fine{margin-top:26px;font-size:12px;color:#aab5c1}
 
+/* ---------- Phones: categories with 3+ catalogues become swipeable rows ---------- */
+@media(max-width:639px){
+  .rail .grid{display:flex;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:16px;scrollbar-width:none;
+    margin:-10px -16px;padding:10px 16px;-webkit-overflow-scrolling:touch}
+  .rail .grid::-webkit-scrollbar{display:none}
+  .rail .grid.nudging{scroll-snap-type:none} /* off for a moment so the one-time swipe hint can move */
+  /* two cards fill the screen and a slice of the third shows, so it is clear there is more */
+  .rail .card{flex:0 0 min(max(130px,calc((100vw - 76px) / 2)),210px);scroll-snap-align:start}
+  /* while searching, show results as a normal grid so nothing hides off to the side */
+  .searching .rail .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible;scroll-snap-type:none;margin:0;padding:0}
+}
+/* As a card slides in from the right edge it eases up to full size. Follows the finger, no autoplay. */
+@keyframes peek{from{opacity:.5;transform:scale(.93)}to{opacity:1;transform:none}}
+@supports (animation-timeline:view(inline)){
+  @media(max-width:639px) and (prefers-reduced-motion:no-preference){
+    .rail .card{animation:peek linear backwards;animation-timeline:view(inline);animation-range:entry 0% entry 90%}
+    .searching .rail .card{animation:none}
+  }
+}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .wordmark,.hero p{animation:none}

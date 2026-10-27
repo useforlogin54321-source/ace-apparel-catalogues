@@ -71,12 +71,34 @@
       h.sec.hidden = n === 0; if (h.chip) h.chip.hidden = n === 0;
       h.small.textContent = n; h.sr.textContent = ", " + n + (n === 1 ? " catalogue" : " catalogues");
     });
+    document.getElementById("groups").classList.toggle("searching", !!q);
     emptyEl.hidden = total !== 0;
     statusEl.textContent = q ? (total === 0 ? "No catalogues found" : total + (total === 1 ? " catalogue found" : " catalogues found")) : "";
   }
   input.addEventListener("input", runSearch);
   input.addEventListener("keydown", function (e) { if (e.key === "Enter") input.blur(); }); /* closes the phone keyboard */
 
+
+  /* On phones the rows swipe. Show it once: nudge the first row sideways, then let it spring back. */
+  var phone = window.matchMedia && window.matchMedia("(max-width: 639px)");
+  var firstRail = document.querySelector(".rail .grid");
+  if (phone && firstRail && !reduce && "IntersectionObserver" in window) {
+    var touched = false, stop = function () { touched = true; firstRail.classList.remove("nudging"); };
+    ["touchstart", "pointerdown", "wheel"].forEach(function (ev) { firstRail.addEventListener(ev, stop, { passive: true }); });
+    var hint = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return;
+      hint.disconnect();
+      if (touched || !phone.matches || firstRail.scrollWidth <= firstRail.clientWidth + 8) return;
+      setTimeout(function () {
+        if (touched) return;
+        firstRail.classList.add("nudging");
+        firstRail.scrollTo({ left: 56, behavior: "smooth" });
+        setTimeout(function () { if (!touched) firstRail.scrollTo({ left: 0, behavior: "smooth" }); }, 700);
+        setTimeout(function () { firstRail.classList.remove("nudging"); }, 1500);
+      }, 1100);
+    }, { threshold: 0.7 });
+    hint.observe(firstRail);
+  }
 
   document.getElementById("toTop").addEventListener("click", function () {
     window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
