@@ -111,10 +111,10 @@
     enq.hidden = n === 0;
     document.body.classList.toggle("has-enq", n > 0);
     document.getElementById("enqCount").textContent = n;
-    document.getElementById("enqLbl").textContent = n === 1 ? "catalogue selected" : "catalogues selected";
+    document.getElementById("enqLbl").textContent = "selected for enquiry";
     var msg = "Hi, I'd like to enquire about these catalogues:\n" + picked.map(function (p) { return "- " + p; }).join("\n") + "\n(from your online catalogue)";
     Array.prototype.forEach.call(document.querySelectorAll(".ask"), function (b) {
-      b.querySelector(".ask-t").textContent = b.getAttribute("aria-pressed") === "true" ? "Added" : (n ? "Add to enquiry" : "Enquiry");
+      b.querySelector(".ask-t").textContent = b.getAttribute("aria-pressed") === "true" ? "Added" : (n ? "Add" : "Enquire");
     });
     document.getElementById("enqSend").href = "https://wa.me/919822325928?text=" + encodeURIComponent(msg);
   }
