@@ -104,6 +104,35 @@
     hint.observe(firstRail);
   }
 
+  /* Enquiry list: tick catalogues, then send one WhatsApp message listing them. */
+  var enq = document.getElementById("enq"), picked = [];
+  function renderEnq() {
+    var n = picked.length;
+    enq.hidden = n === 0;
+    document.body.classList.toggle("has-enq", n > 0);
+    document.getElementById("enqCount").textContent = n;
+    document.getElementById("enqLbl").textContent = n === 1 ? "catalogue selected" : "catalogues selected";
+    var msg = "Hi, I'd like to enquire about these catalogues:\n" + picked.map(function (p) { return "- " + p; }).join("\n") + "\n(from your online catalogue)";
+    Array.prototype.forEach.call(document.querySelectorAll(".ask"), function (b) {
+      b.querySelector(".ask-t").textContent = b.getAttribute("aria-pressed") === "true" ? "Added" : (n ? "Add to enquiry" : "Enquiry");
+    });
+    document.getElementById("enqSend").href = "https://wa.me/919822325928?text=" + encodeURIComponent(msg);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".ask"), function (btn) {
+    var name = btn.closest(".item").querySelector("strong").textContent;
+    btn.addEventListener("click", function () {
+      var i = picked.indexOf(name);
+      if (i > -1) picked.splice(i, 1); else picked.push(name);
+      btn.setAttribute("aria-pressed", i === -1 ? "true" : "false");
+      renderEnq();
+    });
+  });
+  document.getElementById("enqClear").addEventListener("click", function () {
+    picked = [];
+    Array.prototype.forEach.call(document.querySelectorAll(".ask"), function (b) { b.setAttribute("aria-pressed", "false"); });
+    renderEnq();
+  });
+
   document.getElementById("toTop").addEventListener("click", function () {
     window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
   });
