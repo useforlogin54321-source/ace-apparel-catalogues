@@ -57,8 +57,8 @@
   /* Search: match the name or category, ignoring punctuation and spaces ("t shirt", "tshirt" and "T-shirts" all work). */
   var input = document.getElementById("q"), statusEl = document.getElementById("status"), emptyEl = document.getElementById("empty");
   var norm = function (s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim(); };
-  var cards = Array.prototype.map.call(document.querySelectorAll(".card"), function (card) {
-    var sec = card.closest(".group"), hay = norm(card.querySelector("strong").textContent + " " + sec.querySelector("h2").firstChild.textContent);
+  var cards = Array.prototype.map.call(document.querySelectorAll(".item"), function (card) {
+    var sec = card.closest(".group"), hay = norm(card.querySelector("strong").textContent + " " + sec.querySelector("h2").firstChild.textContent + " " + (sec.dataset.alias || ""));
     return { card: card, sec: sec, hay: hay, squashed: hay.replace(/ /g, "") };
   });
   var heads = sections.map(function (s) {
@@ -67,7 +67,7 @@
   function runSearch() {
     var q = norm(input.value), tokens = q ? q.split(" ") : [], squashedQ = q.replace(/ /g, ""), total = 0, per = {};
     cards.forEach(function (o) {
-      var show = !q || tokens.every(function (t) { return o.hay.indexOf(t) > -1; }) || o.squashed.indexOf(squashedQ) > -1;
+      var show = !q || tokens.every(function (t) { return t.length > 1 ? o.hay.indexOf(t) > -1 : (" " + o.hay).indexOf(" " + t) > -1; }) || o.squashed.indexOf(squashedQ) > -1;
       o.card.hidden = !show;
       if (show) { total++; per[o.sec.id] = (per[o.sec.id] || 0) + 1; }
     });
@@ -82,7 +82,6 @@
   }
   input.addEventListener("input", runSearch);
   input.addEventListener("keydown", function (e) { if (e.key === "Enter") input.blur(); }); /* closes the phone keyboard */
-
 
   /* On phones the rows swipe. Show it once: nudge the first row sideways, then let it spring back. */
   var phone = window.matchMedia && window.matchMedia("(max-width: 639px)");
