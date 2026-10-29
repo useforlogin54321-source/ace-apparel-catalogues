@@ -32,4 +32,4 @@ Replace ace-apparel-catalogues.vercel.app in index.html (og:url, og:image, canon
 ## Known limits
 - Cards without a local cover show Drive's page-1 thumbnail until a `covers/` image is added.
 - Anyone with a Drive link can use Drive's download button. For true view-only, restrict download on each file in Drive.
-- Share preview uses `assets/og.jpg` and the domain ace-apparel-catalogues.vercel.app; update both in `index.html` if the domain changes.
+- Share preview uses `assets/og-v2.jpg (logo kept inside the centre square so WhatsApp thumbnail crops cannot cut it; rename the file when you change it, because WhatsApp caches by URL)` and the domain ace-apparel-catalogues.vercel.app; update both in `index.html` if the domain changes.
