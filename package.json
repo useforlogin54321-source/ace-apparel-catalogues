@@ -1,0 +1,21 @@
+{
+  "name": "ace-apparel-catalogues",
+  "version": "1.0.0",
+  "description": "Ace Apparel uniform catalogues website",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "echo 'No build required for vanilla HTML project'",
+    "lint": "echo 'No linter configured'"
+  },
+  "keywords": [
+    "uniforms",
+    "catalogues",
+    "apparel"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}
